@@ -1,20 +1,21 @@
 package src;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Utilities {
-    public static List<String> splitStringByNewline(String inputString) {
-        List<String> result = new ArrayList<>();
-        Scanner scanner = new Scanner(inputString);
-
-        while (scanner.hasNextLine()) {
-            result.add(scanner.nextLine());
+	public static List<String> readFileAsListOfStrings(String filePath) throws IOException {
+        List<String> content = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.add(line);
+            }
         }
-        
-        scanner.close();
-        return result;
+        return content;
     }
 
 }

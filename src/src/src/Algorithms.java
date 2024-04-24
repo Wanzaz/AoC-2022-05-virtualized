@@ -1,4 +1,5 @@
 package src;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -6,9 +7,9 @@ import java.util.*;
  * @author ondrejpazourek
  */
 public class Algorithms {
-    public static String day_05_1(String userInput) {
+    public static String day_05_1(String userInputFile) throws IOException {
 		// Split the user input into individual lines
-		List<String> input = new ArrayList<>(Arrays.asList(userInput.split("\n")));
+		List<String> input = Utilities.readFileAsListOfStrings(userInputFile);
 
 		// Find the index of the empty line in the input
 		int blankIndex = -1;
@@ -64,6 +65,5 @@ public class Algorithms {
 
 		return result.toString(); // Return the final result
 	}
-
 
 }
