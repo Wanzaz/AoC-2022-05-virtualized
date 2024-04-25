@@ -1,69 +1,106 @@
 package src;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author ondrejpazourek
  */
 public class Algorithms {
+
+    // Regular expression pattern to match instruction lines
+    private static final Pattern INSTRUCTION_PATTERN = Pattern.compile("^move (\\d+) from (\\d+) to (\\d+)$");
+
+    // Record representing an instruction
+    private record Instruction(int count, int from, int to) {}
+
+    /**
+     * Executes the Day 05-1 algorithm.
+     *
+     * @param userInputFile Path to the input file
+     * @return The result of the algorithm
+     * @throws IOException If an I/O error occurs
+     */
     public static String day_05_1(String userInputFile) throws IOException {
-		// Split the user input into individual lines
-		List<String> input = Utilities.readFileAsListOfStrings(userInputFile);
+        List<String> input = Utilities.readFileAsListOfStrings(userInputFile);
+        int blankIndex = Utilities.findBlankIndex(input);
 
-		// Find the index of the empty line in the input
-		int blankIndex = -1;
-		for (int i = 0; i < input.size(); ++i) {
-			if (input.get(i).isEmpty()) { // Check for blank line
-				blankIndex = i;
-				break;
-			}
-		}
+        List<Stack<Character>> stacks = initializeStacks(input, blankIndex);
 
-		// Setup initial state of stacks based on the input
-		List<Stack<Character>> stacks = new ArrayList<>();
-		String stackLabels = input.get(blankIndex - 1);
-		for (int i = 0; i < stackLabels.length(); ++i) {
-			if (stackLabels.charAt(i) == ' ') {
-				continue; // Skip spaces
-			}
+        processInstructions(input, blankIndex, stacks);
 
-			// Create a new stack for each label
-			Stack<Character> currentStack = new Stack<>();
-			for (int lineIndex = blankIndex - 2; lineIndex >= 0; --lineIndex) {
-				// Traverse lines above the blank line and push crates onto the stack
-				String line = input.get(lineIndex);
-				char crate = line.charAt(i);
-				if (crate == ' ') {
-					break; // Exit loop if crate is empty
-				}
-				currentStack.push(crate);
-			}
-			stacks.add(currentStack); // Add the constructed stack to the list
-		}
+        return getResult(stacks);
+    }
 
-		// Process moves based on the input instructions
-		for (int i = blankIndex + 1; i < input.size(); ++i) {
-			// Split the instruction line into tokens
-			String[] tokens = input.get(i).split(" ");
-			int amount = Integer.parseInt(tokens[1]);
-			int from = Integer.parseInt(tokens[3]) - 1; // Convert 1-based index to 0-based index
-			int to = Integer.parseInt(tokens[5]) - 1; // Convert 1-based index to 0-based index
+    /**
+     * Initializes the stacks based on the input.
+     *
+     * @param input      List of input lines
+     * @param blankIndex Index of the blank line in the input
+     * @return List of initialized stacks
+     */
+    private static List<Stack<Character>> initializeStacks(List<String> input, int blankIndex) {
+        List<Stack<Character>> stacks = new ArrayList<>();
+        String stackLabels = input.get(blankIndex - 1);
+        for (int i = 0; i < stackLabels.length(); ++i) {
+            if (stackLabels.charAt(i) == ' ') {
+                continue;
+            }
+            Stack<Character> currentStack = new Stack<>();
+            for (int lineIndex = blankIndex - 2; lineIndex >= 0; --lineIndex) {
+                String line = input.get(lineIndex);
+                if (i < line.length()) {
+                    char crate = line.charAt(i);
+                    if (crate == ' ') {
+                        break;
+                    }
+                    currentStack.push(crate);
+                }
+            }
+            stacks.add(currentStack);
+        }
+        return stacks;
+    }
 
-			// Move the specified number of crates from one stack to another
-			for (int j = 1; j <= amount; ++j) {
-				char crate = stacks.get(from).pop(); // Remove crate from source stack
-				stacks.get(to).push(crate); // Push crate onto destination stack
-			}
-		}
+    /**
+     * Processes the instructions and moves crates between stacks.
+     *
+     * @param input      List of input lines
+     * @param blankIndex Index of the blank line in the input
+     * @param stacks     List of stacks representing crates
+     */
+    private static void processInstructions(List<String> input, int blankIndex, List<Stack<Character>> stacks) {
+        for (int i = blankIndex + 1; i < input.size(); ++i) {
+            Matcher matcher = INSTRUCTION_PATTERN.matcher(input.get(i));
+            if (matcher.find()) {
+                Instruction instruction = new Instruction(
+                        Integer.parseInt(matcher.group(1)),
+                        Integer.parseInt(matcher.group(2)) - 1,
+                        Integer.parseInt(matcher.group(3)) - 1
+                );
 
-		// Access the top element of each stack and append it to the result
-		StringBuilder result = new StringBuilder();
-		for (Stack<Character> currentStack : stacks) {
-			result.append(currentStack.peek()); // Append the top crate of each stack
-		}
+                for (int j = 1; j <= instruction.count(); ++j) {
+                    char crate = stacks.get(instruction.from()).pop();
+                    stacks.get(instruction.to()).push(crate);
+                }
+            }
+        }
+    }
 
-		return result.toString(); // Return the final result
-	}
-
+    /**
+     * Constructs the result by accessing the top crate of each stack.
+     *
+     * @param stacks List of stacks representing crates
+     * @return The result string
+     */
+    private static String getResult(List<Stack<Character>> stacks) {
+        StringBuilder result = new StringBuilder();
+        for (Stack<Character> currentStack : stacks) {
+            result.append(currentStack.peek());
+        }
+        return result.toString();
+    }
 }
+

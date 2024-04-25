@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class Utilities {
 	public static List<String> readFileAsListOfStrings(String filePath) throws IOException {
@@ -16,6 +17,17 @@ public class Utilities {
             }
         }
         return content;
+    }
+	
+	public static int findBlankIndex(List<String> input) {
+        int blankIndex = -1;
+        for (int i = 0; i < input.size(); ++i) {
+            if (input.get(i).isEmpty()) {
+                blankIndex = i;
+                break;
+            }
+        }
+        return blankIndex;
     }
 
 }
