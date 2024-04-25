@@ -95,12 +95,48 @@ The Elves just need to know which crate will end up on top of each stack; in thi
 -------
 
 # 2 Analýza problému
-Nejdříve je potřeba zamyslet, jak tuto komplexní úlohu řešit (dvakrát měř jednou řež), protože řešení je to hlavní, co tuto ročníkovou práci definuje. Nadále je nutné vytvořit hiearchii pro efektivní řešení této aplikace. 
+Nejdříve je potřeba zamyslet, jak tuto komplexní úlohu řešit (dvakrát měř jednou řež), protože řešení je to hlavní, co tuto ročníkovou práci definuje. Velká část úlohy se týká načítání a zpracovávání dat. Soubor je dost specifický a komplexní pro načítání, takže se dá očekávat, že bude spousta výjimek. Protože jak je známo, uživatelé jsou velmi kreatívní při zadávání vstupu. Nadále je nutné vytvořit hiearchii pro efektivní řešení této aplikace. 
 
 Také je šikovné si ideálně vytvořit obecnou třídu, která bude řešit jednoduché problémy pomocí pomocných funkcí (např. transformace souboru do textového řetězce) a postupně zvyšovat složitost. 
 
 # 3 Návrh řešení
-Tady popiš, jak navrhuješ řešit identifikované problémy. Vybírej z návrhů a zdůvodňuj jejich výběr.
+#### Algoritmus
+Pro řešení tohoto problému mě napadly dva způsoby, jak ho vyřešit. První by bylo to řešit přes velmi známou strukturu jménem pole, nadále mě napadlo to řešit přes více specifickou datovou strukturu jménem zásobník. Tato struktura  vyžaduje trochu více kreativní přístup, který na první pohled není tak zřejmý. V tomto případě se určitě vyplatí, protože řešení s polem by bylo celkem dost chaotické a měl vyšší složitost. Pro přesvědčení si tyto přístupy porovnáme v pozdější části. Moje řešení tedy bude obsahovat zásobník a pro kontrast porovnáme i internetové řešení s polem.
+
+#### Instrukce
+Pro část s instrukcemi by se dal použít regex, který jsme se zrovna učili. Také by se dala implementovat struktura record, která by nám umožnila zefektivnit řešení, protože nám uštří jednu celou třídu.
+
+#### Výjimky
+Nadále si vytvoříme autentické třídy výjimek, abychom mohli uživatele informovat, kde přesně jeho input zhavaroval. Dá se počítat s tím, že to je velké předsevzetí, aby uživatel byl správně informován ohledně jeho souboru. 
+
+#### Obecná třída
+Dále tu máme obecnou třídu, která bude mít pomocné funkce, která budou zásadně dělat jen daný účel. Abychom zachovali atomizaci funkcí a tím zvýšili efektivnost aplikace.
+
 # 4 Popis implementace
-Tady stručně popiš své konkrétní řešení podle návrhů vybraných a odůvodněných v minulé části.
+#### Algoritmus
+Pro realizaci algoritmu jsme ho rozdělili na 6 částí.
+
+#### 1.1 Transformace dat ze souboru
+V první části jsme načetli uživatelská data pomocí funkce ```readFileAsListOfStrings```, která je součástí obecné třídy pod názvem ```Utilities```. Důvod je ten, abychom se zbytečně v dalších krocích nevraceli do souboru.
+#### 1.2 Prázdný řádek
+V druhé části jsme našli mezi daty prázdný řádek, který je jedním z autentických znaků této úlohy. Udělali jsme to pomocí funkce ```findBlankIndex```, která je také součástí třídy ```Utilities```. Tato funkce nám vrací index prázdného řádku, abychom se podle něho mohli orientovat v "souboru" (už je to pole s typem String).
+#### 1.3 Načtení beden
+V třetí části načítáme tu skládanku z beden. Orientujeme se pomocí prázdného řádku, protože nad prázndným řádkem nacházíme očíslované sloupce beden. Očíslování nám pomůýe k tomu, abychom se dostali k tě bednám samým. Tento proces se děje ve funkci ```initializeStacks```. Nadále postupujeme bedna po bedně a načítáme je do toho aktuálního sloupce. Avšak jakmile narazíme na "prázdnou bednu", tak to znamená, že jsme na konci sloupce a posuneme se k dalšímu sloupci. K tomuto procesu nám dopomáhá struktura zásobníku a její jedinečné znalosti. Nakonec vrátíme pole zásobníku s datovým typem charakter.
+#### 1.4 Načtení instrukcí
+V čtrté části používáme slíbený regex, který má generický formát pro načítaní instrukcí. I v tomto případě se orientujeme podle prázdného řádku, protože instrukce se nacházejí pod prazdným řádkem. Používám zde i record ```Instruction```, který obsahuje počet beden, které chtějí být přesunuty, sloupec ze kterého se mají být bráný a cílový sloupec, kam se přesunou. Používáme zde známé operace nad zásobníkem jako je push a pop k splnění tohoto úkolu, který obsahuje počet beden, které chtějí být přesunuty, sloupec ze kterého se mají být bráný a cílový sloupec, kam se přesunou. Používáme zde známé operace nad zásobníkem jako je push a pop k splnění tohoto úkolu. Tento proces se odehrává ve funkci s názvem ```processInstructions```. Je to procedúra, takže nic nevracíme.
+#### 1.5 Získání výsledku
+V páté části používáme primitivní funkci s názvem ```getResult```, která projde všechny sloupce a zaznamená vrchní hodnoty zásobníku, které se uloží do řetězce. Tento řetězec je následně vrácen.
+#### 1.1 Obalovací funkce
+V šesté části toho algoritmu se dostáváme s samému konci a to k obalovací fuknci ```day_05_1```. Tato funkce zastřešuje popsaný průběh algoritmu a vrací výsledek zadaného souboru.
+
+#### Výjimky
+Pro výjimky byly vytvořeny dvě třídy ```InputDataException``` ```InputFormatException```, které mají nastarost informovanost uživatele. Jsou vyhazovány v načítacích funkcích, kde je možné narazit na problémy. Například běžné problémy jsou:
+- nesprávný index
+- duplikace názvu beden
+- špatné očíslovaní sloupce
+- prázdný sloupec
+- příliš vysoký počet beden, který daný sloupec neobsahuje
+- nespravný formát instrukce
+
+Dále tu máme běžnou vyjímku jako například ```IOException```.
 
