@@ -7,7 +7,6 @@
 [P] [P] [C] [W] [W] [F] [W] [J] [C]
 [T] [L] [D] [G] [P] [P] [V] [N] [R]
  1   2   3   4   5   6   7   8   9
-
 move 6 from 2 to 1
 move 4 from 6 to 3
 move 1 from 6 to 5
@@ -511,4 +510,3 @@ move 7 from 1 to 5
 move 5 from 5 to 2
 move 8 from 6 to 8
 move 5 from 8 to 9
-

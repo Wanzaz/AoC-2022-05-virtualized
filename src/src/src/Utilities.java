@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class Utilities {
 	public static List<String> readFileAsListOfStrings(String filePath) throws IOException {
