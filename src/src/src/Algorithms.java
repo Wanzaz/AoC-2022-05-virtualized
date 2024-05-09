@@ -1,4 +1,7 @@
 package src;
+import utilities.Reading;
+import exceptions.InputDataException;
+import exceptions.InputFormatException;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -12,6 +15,9 @@ public class Algorithms {
 
     // Regular expression pattern to match instruction lines
     private static final Pattern INSTRUCTION_PATTERN = Pattern.compile("^move (\\d+) from (\\d+) to (\\d+)$");
+	
+	// Record representing an instruction
+	private record Instruction(int count, int from, int to) {}
 
 /**
      * Executes the Day 05-1 algorithm.
@@ -23,8 +29,8 @@ public class Algorithms {
      * @throws InputDataException   If there is an issue with the input data
      */
     public static String day_05_1(String userInputFile) throws IOException, InputFormatException, InputDataException {
-        List<String> input = Utilities.readFileAsListOfStrings(userInputFile);
-        int blankIndex = Utilities.findBlankIndex(input);
+        List<String> input = Reading.readFileAsListOfStrings(userInputFile);
+        int blankIndex = Reading.findBlankIndex(input);
 		if (blankIndex == -1) {
 			throw new InputFormatException("Blank line missing in input.");
 		}
@@ -91,34 +97,39 @@ public class Algorithms {
      * @throws InputFormatException If there is a format issue with the input
      * @throws InputDataException   If there is an issue with the input data
      */
-    private static void processInstructions(List<String> input, int blankIndex, List<Stack<Character>> stacks) throws InputFormatException, InputDataException {
-        for (int i = blankIndex + 1; i < input.size(); ++i) {
-            Matcher matcher = INSTRUCTION_PATTERN.matcher(input.get(i));
-            if (matcher.find()) {
-                int count = Integer.parseInt(matcher.group(1));
-                int from = Integer.parseInt(matcher.group(2)) - 1;
-                int to = Integer.parseInt(matcher.group(3)) - 1;
+	private static void processInstructions(List<String> input, int blankIndex, List<Stack<Character>> stacks) throws InputFormatException, InputDataException {
+		for (int i = blankIndex + 1; i < input.size(); ++i) {
+			Matcher matcher = INSTRUCTION_PATTERN.matcher(input.get(i));
+			if (matcher.find()) {
+				Instruction instruction = new Instruction(
+					Integer.parseInt(matcher.group(1)),
+					Integer.parseInt(matcher.group(2)) - 1,
+					Integer.parseInt(matcher.group(3)) - 1
+				);
 
-                if (count <= 0 || from < 0 || to < 0) {
-                    throw new InputFormatException("Invalid instruction format at line " + (i + 1));
-                }
-                if (from >= stacks.size() || to >= stacks.size()) {
-                    throw new InputDataException("Invalid stack index in the instruction at line " + (i + 1));
-                }
-                if (stacks.get(from).isEmpty()) {
-                    throw new InputDataException("Cannot move crates from an empty stack at line " + (i + 1));
-                }
-                if (count > stacks.get(from).size()) {
-                    throw new InputDataException("Not enough crates to move in stack " + (from + 1) + " at line " + (i + 1));
-                }
+				// Validate instruction format and input data
+				if (instruction.count() <= 0 || instruction.from() < 0 || instruction.to() < 0) {
+					throw new InputFormatException("Invalid instruction format at line " + (i + 1));
+				}
+				if (instruction.from() >= stacks.size() || instruction.to() >= stacks.size()) {
+					throw new InputDataException("Invalid stack index in the instruction at line " + (i + 1));
+				}
+				if (stacks.get(instruction.from()).isEmpty()) {
+					throw new InputDataException("Cannot move crates from an empty stack at line " + (i + 1));
+				}
+				if (instruction.count() > stacks.get(instruction.from()).size()) {
+					throw new InputDataException("Not enough crates to move in stack " + (instruction.from() + 1) + " at line " + (i + 1));
+				}
 
-                for (int j = 1; j <= count; ++j) {
-                    char crate = stacks.get(from).pop();
-                    stacks.get(to).push(crate);
-                }
-            }
-        }
-    }
+				// Execute the instruction
+				for (int j = 1; j <= instruction.count(); ++j) {
+					char crate = stacks.get(instruction.from()).pop();
+					stacks.get(instruction.to()).push(crate);
+				}
+			}
+		}
+	}
+
 
     /**
      * Constructs the result by accessing the top crate of each stack.

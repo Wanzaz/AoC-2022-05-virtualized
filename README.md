@@ -95,7 +95,7 @@ The Elves just need to know which crate will end up on top of each stack; in thi
 -------
 
 # 2 Analýza problému
-Nejdříve je potřeba zamyslet, jak tuto komplexní úlohu řešit (dvakrát měř jednou řež), protože řešení je to hlavní, co tuto ročníkovou práci definuje. Velká část úlohy se týká načítání a zpracovávání dat. Soubor je dost specifický a komplexní pro načítání, takže se dá očekávat, že bude spousta výjimek. Protože jak je známo, uživatelé jsou velmi kreatívní při zadávání vstupu. Nadále je nutné vytvořit hiearchii pro efektivní řešení této aplikace. 
+Nejdříve je potřeba zamyslet, jak tuto komplexní úlohu řešit (dvakrát měř jednou řež), protože řešení je to hlavní, co tuto ročníkovou práci definuje. Velká část úlohy se týká načítání a zpracovávání dat. Soubor je dost specifický a komplexní pro načítání, takže se dá očekávat, že bude spousta výjimek. Protože jak je známo, uživatelé jsou velmi kreativní při zadávání vstupu. Nadále je nutné vytvořit hiearchii pro efektivní řešení této aplikace. 
 
 Také je šikovné si ideálně vytvořit obecnou třídu, která bude řešit jednoduché problémy pomocí pomocných funkcí (např. transformace souboru do textového řetězce) a postupně zvyšovat složitost. 
 
@@ -104,7 +104,7 @@ Také je šikovné si ideálně vytvořit obecnou třídu, která bude řešit j
 Pro řešení tohoto problému mě napadly dva způsoby, jak ho vyřešit. První by bylo to řešit přes velmi známou strukturu jménem pole, nadále mě napadlo to řešit přes více specifickou datovou strukturu jménem zásobník. Tato struktura  vyžaduje trochu více kreativní přístup, který na první pohled není tak zřejmý. V tomto případě se určitě vyplatí, protože řešení s polem by bylo celkem dost chaotické a měl vyšší složitost. Pro přesvědčení si tyto přístupy porovnáme v pozdější části. Moje řešení tedy bude obsahovat zásobník a pro kontrast porovnáme i internetové řešení s polem.
 
 #### Instrukce
-Pro část s instrukcemi by se dal použít regex, který jsme se zrovna učili. Také by se dala implementovat struktura record, která by nám umožnila zefektivnit řešení, protože nám uštří jednu celou třídu.
+Pro část s instrukcemi by se dal použít regex, který jsme se zrovna učili. Také by se dala implementovat struktura record, která by nám umožnila zefektivnit řešení, protože nám ušetří jednu celou třídu.
 
 #### Výjimky
 Nadále si vytvoříme autentické třídy výjimek, abychom mohli uživatele informovat, kde přesně jeho input zhavaroval. Dá se počítat s tím, že to je velké předsevzetí, aby uživatel byl správně informován ohledně jeho souboru. 

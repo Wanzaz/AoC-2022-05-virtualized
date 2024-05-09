@@ -1,4 +1,4 @@
-package src;
+package utilities;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author ondrejpazourek
  */
-public class Utilities {
+public class Reading {
 	
 	/**
 	 * Reads the content of a file and returns it as a list of strings.

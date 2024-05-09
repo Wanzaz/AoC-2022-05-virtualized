@@ -1,5 +1,7 @@
 package src;
 
+import exceptions.InputDataException;
+import exceptions.InputFormatException;
 import java.io.IOException;
 
 /**
@@ -9,16 +11,31 @@ import java.io.IOException;
  */
 public class Src {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalArgumentException {
+        if (args.length != 1) {
+            System.err.println("Usage: java Main <input_file>");
+            throw new IllegalArgumentException("Invalid number of arguments");
+        }
+
+        String userInputFile = args[0];
+        
+        // Regular expression to match "data.txt", "name/data.txt", "dir/name/data.txt", etc.
+        String regex = "(?:\\w+/)*\\w+\\.txt$";
+        
+        if (!userInputFile.matches(regex)) {
+            throw new IllegalArgumentException("Input file must be in the format nameOfFile.txt or nested in directory like this data/nameOfFile.txt");
+        }
+
         try {
-            String userInputFile = "data/original_data.txt";
             String result = performAlgorithm(userInputFile);
             System.out.println("Result: " + result);
         } catch (IOException e) {
+            System.err.println("An error occurred while reading the input file: " + e.getMessage());
         } catch (InputFormatException | InputDataException e) {
             System.err.println("An error occurred while processing the input data: " + e.getMessage());
         }
     }
+        
 
     /**
      * Perform the algorithm.
