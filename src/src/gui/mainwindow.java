@@ -1,8 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package gui;
+
+import exceptions.InputDataException;
+import exceptions.InputFormatException;
+import java.io.IOException;
+import algorithms.Algorithms;
+import java.util.List;
+import utilities.Reading;
 
 /**
  *
@@ -13,9 +16,33 @@ public class mainwindow extends javax.swing.JFrame {
 	/**
 	 * Creates new form mainwindow
 	 */
+	private static String userInputFile;
+	
 	public mainwindow() {
 		initComponents();
 	}
+	
+	/**
+	 * Perform the algorithm.
+	 *
+	 * @param userInputFile Path to the input file
+	 * @return The result of the algorithm
+	 * @throws IOException If an I/O error occurs
+	 * @throws InputFormatException If there is a format issue with the input
+	 * @throws InputDataException If there is an issue with the input data
+	 */
+	public static String performAlgorithm(String userInputFile) throws IOException, InputFormatException, InputDataException {
+		try {
+			List<String> input = Reading.readFileAsListOfStrings(userInputFile);
+			// Call the algorithm function from Algorithms class
+			Algorithms algorithms = new Algorithms(input, Algorithms.countTotalInstructions(input));
+			algorithms.processAllInstructions(input);
+			return algorithms.getResult();
+		} catch (IOException | InputFormatException | InputDataException e) {
+			throw e;
+		}
+	}
+	
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -26,31 +53,79 @@ public class mainwindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.setAlignmentX(5.0F);
+        jTable1.setShowGrid(true);
+        jScrollPane1.setViewportView(jTable1);
+
+        jButton1.setText("Run");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(179, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(164, 164, 164))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(69, 69, 69))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+		try {
+			if (userInputFile != null) {
+				String result = performAlgorithm(userInputFile);
+				System.out.println("Algorithm result: " + result);
+			} else {
+				System.err.println("Error: userInputFile is null.");
+			}
+		} catch (IOException | InputFormatException | InputDataException e) {
+			System.err.println("An error occurred: " + e.getMessage());
+		}
+    }//GEN-LAST:event_jButton1MouseClicked
+
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
-		/* Set the Nimbus look and feel */
-		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-		/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-		 */
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -58,16 +133,23 @@ public class mainwindow extends javax.swing.JFrame {
 					break;
 				}
 			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(mainwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(mainwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(mainwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(mainwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
 		//</editor-fold>
+		if (args.length != 1) {
+            System.err.println("Usage: java Main <input_file>");
+            throw new IllegalArgumentException("Invalid number of arguments");
+        }
+
+        userInputFile = args[0];
+        
+        // Regular expression to match "data.txt", "name/data.txt", "dir/name/data.txt", etc.
+        String regex = "(?:\\w+/)*\\w+\\.txt$";
+        
+        if (!userInputFile.matches(regex)) {
+            throw new IllegalArgumentException("Input file must be in the format nameOfFile.txt or nested in directory like this data/nameOfFile.txt");
+        }
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
@@ -78,5 +160,8 @@ public class mainwindow extends javax.swing.JFrame {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
