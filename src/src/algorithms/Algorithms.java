@@ -25,7 +25,7 @@ public class Algorithms {
 	
 	// Record representing an instruction
 	private record Instruction(int count, int from, int to) {}
-
+	
     /**
      * Constructs an instance of the Algorithms class.
      *
@@ -36,6 +36,19 @@ public class Algorithms {
      */
     public Algorithms(List<String> input, int numberOfInstructions) throws InputFormatException, InputDataException {
         this.numberOfInstructions = numberOfInstructions;
+		this.blankIndex = Reading.findBlankIndex(input);
+        this.stacks = initializeStacks(input);
+    }
+	
+	/**
+     * Constructs an instance of the Algorithms class.
+     *
+     * @param input               List of input lines
+     * @throws InputFormatException If there is a format issue with the input
+     * @throws InputDataException   If there is an issue with the input data
+     */
+	 public Algorithms(List<String> input) throws InputFormatException, InputDataException {
+        this.numberOfInstructions = Algorithms.countTotalInstructions(input);
 		this.blankIndex = Reading.findBlankIndex(input);
         this.stacks = initializeStacks(input);
     }
@@ -187,5 +200,44 @@ public class Algorithms {
 		}
 		return totalInstructions;
 	}
+	
+	/**
+     * Gets the label of the stack at the specified index.
+     *
+     * @param index The index of the stack
+     * @return The label of the stack
+     */
+    public String getStackLabel(int index) {
+        return String.valueOf(index + 1); // Assuming the labels start from 1
+    }
+	
+	/**
+     * Retrieves the data array and column names for creating a table model.
+     *
+     * @return An array containing the data array and the column names array
+     */
+    public Object[] getDataArrayAndColumnNames() {
+        int maxStackSize = 0;
+        for (Stack<Character> stack : stacks) {
+            maxStackSize = Math.max(maxStackSize, stack.size());
+        }
+
+        Object[][] data = new Object[maxStackSize][stacks.size()];
+        String[] columnNames = new String[stacks.size()];
+
+        int columnIndex = 0;
+        for (Stack<Character> stack : stacks) {
+            String stackLabel = getStackLabel(columnIndex);
+            columnNames[columnIndex] = stackLabel;
+
+            int rowIndex = maxStackSize - 1;
+            for (Character item : stack) {
+                data[rowIndex--][columnIndex] = item;
+            }
+            columnIndex++;
+        }
+
+        return new Object[]{data, columnNames};
+    }
 
 }

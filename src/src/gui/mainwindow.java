@@ -5,6 +5,8 @@ import exceptions.InputFormatException;
 import java.io.IOException;
 import algorithms.Algorithms;
 import java.util.List;
+import java.util.Stack;
+import javax.swing.table.DefaultTableModel;
 import utilities.Reading;
 
 /**
@@ -13,6 +15,7 @@ import utilities.Reading;
  */
 public class mainwindow extends javax.swing.JFrame {
 
+	private Algorithms algorithms;
 	/**
 	 * Creates new form mainwindow
 	 */
@@ -43,6 +46,8 @@ public class mainwindow extends javax.swing.JFrame {
 		}
 	}
 	
+	
+	
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -59,20 +64,29 @@ public class mainwindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jTable1.setAlignmentX(5.0F);
+        jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        try {
+            List<String> input = Reading.readFileAsListOfStrings(userInputFile);
+            this.algorithms = new Algorithms(input);
+        } catch (IOException | InputFormatException | InputDataException e) {
+            System.err.println("An error occurred: " + e.getMessage());
+        }
+
+        // Get the data array and column names from the Algorithms class
+        Object[] dataArrayAndColumnNames = algorithms.getDataArrayAndColumnNames();
+        Object[][] data = (Object[][]) dataArrayAndColumnNames[0]; // Cast the first element to Object[][]
+        String[] columnNames = (String[]) dataArrayAndColumnNames[1]; // Cast the second element to String[]
+
+        // Use data and columnNames to create the table model
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+
+        // Set the model to the jTable1
+        jTable1.setModel(model);
+        jTable1.setRowHeight(50);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.setShowGrid(true);
         jScrollPane1.setViewportView(jTable1);
+        jTable1.getAccessibleContext().setAccessibleName("");
 
         jButton1.setText("Run");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -86,14 +100,14 @@ public class mainwindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(179, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(164, 164, 164))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(69, 69, 69))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(179, 179, 179)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(654, 654, 654)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,8 +115,8 @@ public class mainwindow extends javax.swing.JFrame {
                 .addGap(62, 62, 62)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -150,6 +164,7 @@ public class mainwindow extends javax.swing.JFrame {
         if (!userInputFile.matches(regex)) {
             throw new IllegalArgumentException("Input file must be in the format nameOfFile.txt or nested in directory like this data/nameOfFile.txt");
         }
+		
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
