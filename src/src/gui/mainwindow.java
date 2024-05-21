@@ -5,7 +5,7 @@ import exceptions.InputFormatException;
 import java.io.IOException;
 import algorithms.Algorithms;
 import java.util.List;
-import java.util.Stack;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utilities.Reading;
 
@@ -16,6 +16,7 @@ import utilities.Reading;
 public class mainwindow extends javax.swing.JFrame {
 
 	private Algorithms algorithms;
+	private DefaultTableModel startingModel;
 	/**
 	 * Creates new form mainwindow
 	 */
@@ -34,16 +35,31 @@ public class mainwindow extends javax.swing.JFrame {
 	 * @throws InputFormatException If there is a format issue with the input
 	 * @throws InputDataException If there is an issue with the input data
 	 */
-	public static String performAlgorithm(String userInputFile) throws IOException, InputFormatException, InputDataException {
+	public String performAlgorithm(String userInputFile) throws IOException, InputFormatException, InputDataException {
 		try {
 			List<String> input = Reading.readFileAsListOfStrings(userInputFile);
 			// Call the algorithm function from Algorithms class
-			Algorithms algorithms = new Algorithms(input, Algorithms.countTotalInstructions(input));
-			algorithms.processAllInstructions(input);
+			algorithms.processAllInstructions();
 			return algorithms.getResult();
 		} catch (IOException | InputFormatException | InputDataException e) {
 			throw e;
 		}
+	}
+	
+	// Method to update the GUI based on the current state of the stacks
+	private void updateGuiWithCurrentStacks() {
+		// Assuming you have a JTable or similar component to display the stacks
+		Object[] dataArrayAndColumnNames = algorithms.getDataArrayAndColumnNames();
+		Object[][] data = (Object[][]) dataArrayAndColumnNames[0];
+		String[] columnNames = (String[]) dataArrayAndColumnNames[1];
+
+		DefaultTableModel tableModel = new DefaultTableModel(data, columnNames);
+		jTable1.setModel(tableModel);
+	}
+	
+	private void resetGuiWithCurrentStacks() {
+		jTable1.setModel(this.startingModel);
+		this.algorithms.currentInstruction = algorithms.blankIndex + 1;
 	}
 	
 	
@@ -58,13 +74,70 @@ public class mainwindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Advent of Code day 5 Virtualization");
+        setMinimumSize(new java.awt.Dimension(863, 593));
+
+        jPanel1.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
+
+        jButton4.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        jButton4.setText("Run 10 Steps");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4);
+
+        jButton1.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        jButton1.setText("Run 1 Step");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+
+        jButton2.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        jButton2.setText("Run All Steps Back");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButton2);
+        jButton2.getAccessibleContext().setAccessibleName("10 Steps");
+
+        jButton3.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        jButton3.setText("Run All Steps");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButton3);
 
         jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jTable1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         try {
             List<String> input = Reading.readFileAsListOfStrings(userInputFile);
             this.algorithms = new Algorithms(input);
@@ -78,63 +151,201 @@ public class mainwindow extends javax.swing.JFrame {
         String[] columnNames = (String[]) dataArrayAndColumnNames[1]; // Cast the second element to String[]
 
         // Use data and columnNames to create the table model
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        this.startingModel = new DefaultTableModel(data, columnNames);
 
         // Set the model to the jTable1
-        jTable1.setModel(model);
-        jTable1.setRowHeight(50);
+        jTable1.setModel(this.startingModel);
+        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTable1.setEnabled(false);
+        jTable1.setRowHeight(30);
+        jTable1.setRowSelectionAllowed(false);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.setShowGrid(true);
         jScrollPane1.setViewportView(jTable1);
         jTable1.getAccessibleContext().setAccessibleName("");
 
-        jButton1.setText("Run");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(68, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
+                .addContainerGap(77, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(48, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(654, 654, 654)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(40, 40, 40))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+	// Perfrom One Step
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        // TODO add your handling code here:
-		try {
-			if (userInputFile != null) {
-				String result = performAlgorithm(userInputFile);
-				System.out.println("Algorithm result: " + result);
-			} else {
-				System.err.println("Error: userInputFile is null.");
+		// TODO add your handling code here:                                   
+		// Ensure algorithms instance is initialized
+		if (this.algorithms == null) {
+			// Assuming userInputFile is the path to the input file
+			List<String> input;
+			try {
+				input = Reading.readFileAsListOfStrings(userInputFile);
+				this.algorithms = new Algorithms(input);
+			} catch (InputFormatException | InputDataException | IOException e) {
+				// Handle initialization errors (e.g., show a message dialog)
+				JOptionPane.showMessageDialog(this, "Error initializing algorithms: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
-		} catch (IOException | InputFormatException | InputDataException e) {
-			System.err.println("An error occurred: " + e.getMessage());
 		}
+
+		// Perform one step
+		try {
+			boolean stepPerformed = this.algorithms.performOneStep();
+
+			// Update the GUI to reflect the changes
+			updateGuiWithCurrentStacks();
+
+			if (!stepPerformed) {
+				JOptionPane.showMessageDialog(this, "No more steps to perform.", "Info", JOptionPane.INFORMATION_MESSAGE);
+			}
+		} catch (InputFormatException | InputDataException e) {
+			// Handle instruction processing errors (e.g., show a message dialog)
+			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
     }//GEN-LAST:event_jButton1MouseClicked
+	
+	// Run All Steps Back
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+		// TODO add your handling code here:                                    
+		// Ensure algorithms instance is initialized
+		if (this.algorithms == null) {
+			// Assuming userInputFile is the path to the input file
+			List<String> input;
+			try {
+				input = Reading.readFileAsListOfStrings(userInputFile);
+				this.algorithms = new Algorithms(input);
+			} catch (InputFormatException | InputDataException | IOException e) {
+				// Handle initialization errors (e.g., show a message dialog)
+				JOptionPane.showMessageDialog(this, "Error initializing algorithms: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		// Reset the algorithm state (implement this method in your Algorithms class)
+		this.algorithms.reset();
+
+		// Reset the GUI to reflect the initial state
+		resetGuiWithCurrentStacks();
+    }//GEN-LAST:event_jButton2MouseClicked
+	
+	// Run All Steps
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+		// TODO add your handling code here:                                     
+		// Ensure algorithms instance is initialized
+		if (this.algorithms == null) {
+			// Assuming userInputFile is the path to the input file
+			List<String> input;
+			try {
+				input = Reading.readFileAsListOfStrings(userInputFile);
+				this.algorithms = new Algorithms(input);
+			} catch (InputFormatException | InputDataException | IOException e) {
+				// Handle initialization errors (e.g., show a message dialog)
+				JOptionPane.showMessageDialog(this, "Error initializing algorithms: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		// Perform all steps
+		try {
+			while (this.algorithms.performOneStep()) {
+				// Keep performing steps until there are no more steps to perform
+			}
+
+			// Update the GUI to reflect the changes
+			updateGuiWithCurrentStacks();
+
+			JOptionPane.showMessageDialog(this, "Performed all steps.", "Info", JOptionPane.INFORMATION_MESSAGE);
+		} catch (InputFormatException | InputDataException e) {
+			// Handle instruction processing errors (e.g., show a message dialog)
+			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+		// TODO add your handling code here:
+		// Ensure algorithms instance is initialized
+		if (this.algorithms == null) {
+			// Assuming userInputFile is the path to the input file
+			List<String> input;
+			try {
+				input = Reading.readFileAsListOfStrings(userInputFile);
+				this.algorithms = new Algorithms(input);
+			} catch (InputFormatException | InputDataException | IOException e) {
+				// Handle initialization errors (e.g., show a message dialog)
+				JOptionPane.showMessageDialog(this, "Error initializing algorithms: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		// Read the file and perform ten steps
+		List<String> input;
+		try {
+			input = Reading.readFileAsListOfStrings(userInputFile);
+			boolean allStepsPerformed = this.algorithms.performTenSteps();
+
+			// Update the GUI to reflect the changes
+			updateGuiWithCurrentStacks();
+
+			if (allStepsPerformed) {
+				JOptionPane.showMessageDialog(this, "Performed 10 steps.", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(this, "Performed fewer than 10 steps. No more steps to perform.", "Info", JOptionPane.INFORMATION_MESSAGE);
+			}
+		} catch (IOException e) {
+			// Handle file reading errors (e.g., show a message dialog)
+			JOptionPane.showMessageDialog(this, "Error reading input file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (InputFormatException | InputDataException e) {
+			// Handle instruction processing errors (e.g., show a message dialog)
+			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+    }//GEN-LAST:event_jButton4MouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -176,6 +387,11 @@ public class mainwindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
