@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * 
@@ -273,8 +274,48 @@ public class Algorithms {
      * Resets the algorithm to its initial state. Sets the current instruction
      * pointer to the instruction right after the blank line.
      */
-    public void reset() {
+    public void reset(DefaultTableModel model) {
         // Set the instruction pointer to the position right after the blank line
         currentInstruction = blankIndex + 1;
+		reverseModelToStacks(model);
     }
+	
+	/**
+	 * Converts a DefaultTableModel back to a list of stacks.
+	 * 
+	 * This method clears the existing stacks and repopulates them using the
+	 * data from the provided DefaultTableModel. Each column in the model
+	 * represents a stack, and each row in a column represents an item in that
+	 * stack. The items in the model are expected to be of type Character.
+	 *
+	 * @param model The DefaultTableModel containing the stack data. Each column
+	 * represents a stack, and each row represents an item in the stack.
+	 */
+	public void reverseModelToStacks(DefaultTableModel model) {
+		// Clear existing stacks
+		stacks.clear();
+
+		// Get the number of columns (stacks) and rows (stack height) in the model
+		int columnCount = model.getColumnCount();
+		int rowCount = model.getRowCount();
+
+		// Iterate over each column to create a stack
+		for (int col = 0; col < columnCount; col++) {
+			Stack<Character> stack = new Stack<>();
+
+			// Iterate from the bottom row to the top row of the current column to build the stack
+			for (int row = rowCount - 1; row >= 0; row--) {
+				Object value = model.getValueAt(row, col);
+
+				// If the value is not null and is of type Character, push it onto the stack
+				if (value != null && value instanceof Character) {
+					stack.push((Character) value);
+				}
+			}
+
+			// Add the stack to the list of stacks
+			stacks.add(stack);
+		}
+	}
+
 }

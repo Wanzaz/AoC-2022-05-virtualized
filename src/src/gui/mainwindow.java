@@ -259,7 +259,7 @@ public class mainwindow extends javax.swing.JFrame {
 		}
 
 		// Reset the algorithm state (implement this method in your Algorithms class)
-		this.algorithms.reset();
+		this.algorithms.reset(this.startingModel);
 
 		// Reset the GUI to reflect the initial state
 		resetGuiWithCurrentStacks();
