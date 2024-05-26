@@ -71,7 +71,6 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton4MouseClicked"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton1">
@@ -83,7 +82,6 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton1MouseClicked"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
@@ -172,7 +170,7 @@
                 </Property>
               </Properties>
               <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="" postCode="try {&#xa;    double averageTime = AlgorithmTimer.timeAlgorithm(userInputFile);&#xa;    System.out.printf(&quot;Average execution time over %d iterations: %.6f ms%n&quot;, ITERATIONS, averageTime);&#xa;} catch (IOException | InputFormatException | InputDataException e) {&#xa;    System.err.println(&quot;An error occurred: &quot; + e.getMessage());&#xa;}&#xa;try {&#xa;    double averageTime = AlgorithmTimer.timeInternetSolutionAlgorithm(userInputFile);&#xa;    System.out.printf(&quot;Average execution time over %d iterations: %.6f ms%n&quot;, ITERATIONS, averageTime);&#xa;} catch (IOException | InputFormatException | InputDataException e) {&#xa;    System.err.println(&quot;An error occurred: &quot; + e.getMessage());&#xa;}"/>
               </AccessibilityProperties>
             </Component>
           </SubComponents>

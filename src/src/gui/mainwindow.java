@@ -4,10 +4,14 @@ import exceptions.InputDataException;
 import exceptions.InputFormatException;
 import java.io.IOException;
 import algorithms.Algorithms;
+import algorithms.PureAlgorithms;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utilities.Reading;
+import utilities.AlgorithmTimer;
+import static utilities.AlgorithmTimer.ITERATIONS;
 
 /**
  *
@@ -46,7 +50,13 @@ public class mainwindow extends javax.swing.JFrame {
 		}
 	}
 	
-	// Method to update the GUI based on the current state of the stacks
+	/**
+	 * Updates the GUI based on the current state of the stacks.
+	 *
+	 * This method retrieves the current state of the stacks from the algorithms
+	 * instance and updates the JTable component to reflect this state. It
+	 * assumes you have a JTable or similar component to display the stacks.
+	 */
 	private void updateGuiWithCurrentStacks() {
 		// Assuming you have a JTable or similar component to display the stacks
 		Object[] dataArrayAndColumnNames = algorithms.getDataArrayAndColumnNames();
@@ -56,15 +66,19 @@ public class mainwindow extends javax.swing.JFrame {
 		DefaultTableModel tableModel = new DefaultTableModel(data, columnNames);
 		jTable1.setModel(tableModel);
 	}
-	
+
+	/**
+	 * Resets the GUI to its initial state using the starting model.
+	 *
+	 * This method resets the JTable component to its initial state based on the
+	 * starting model and sets the current instruction pointer in the algorithms
+	 * instance to the instruction right after the blank line.
+	 */
 	private void resetGuiWithCurrentStacks() {
 		jTable1.setModel(this.startingModel);
 		this.algorithms.currentInstruction = algorithms.blankIndex + 1;
 	}
 	
-	
-	
-
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -96,11 +110,6 @@ public class mainwindow extends javax.swing.JFrame {
                 jButton4MouseClicked(evt);
             }
         });
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
         jPanel1.add(jButton4);
 
         jButton1.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
@@ -108,11 +117,6 @@ public class mainwindow extends javax.swing.JFrame {
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
-            }
-        });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton1);
@@ -163,6 +167,18 @@ public class mainwindow extends javax.swing.JFrame {
         jTable1.setShowGrid(true);
         jScrollPane1.setViewportView(jTable1);
         jTable1.getAccessibleContext().setAccessibleName("");
+        try {
+            double averageTime = AlgorithmTimer.timeAlgorithm(userInputFile);
+            System.out.printf("Average execution time over %d iterations: %.6f ms%n", ITERATIONS, averageTime);
+        } catch (IOException | InputFormatException | InputDataException e) {
+            System.err.println("An error occurred: " + e.getMessage());
+        }
+        try {
+            double averageTime = AlgorithmTimer.timeInternetSolutionAlgorithm(userInputFile);
+            System.out.printf("Average execution time over %d iterations: %.6f ms%n", ITERATIONS, averageTime);
+        } catch (IOException | InputFormatException | InputDataException e) {
+            System.err.println("An error occurred: " + e.getMessage());
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -207,7 +223,17 @@ public class mainwindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-	// Perfrom One Step
+	/**
+	 * Handles the mouse click event for performing one step of the algorithm.
+	 * 
+	 * This method ensures that the algorithms instance is initialized, reads
+	 * the input file if necessary, and performs one step of the algorithm. It
+	 * also updates the GUI to reflect the changes and shows appropriate
+	 * messages if there are no more steps to perform or if an error occurs
+	 * during instruction processing.
+	 *
+	 * @param evt The mouse event that triggered this action.
+	 */
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
 		// TODO add your handling code here:                                   
 		// Ensure algorithms instance is initialized
@@ -241,7 +267,16 @@ public class mainwindow extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1MouseClicked
 	
-	// Run All Steps Back
+	/**
+	 * Handles the mouse click event for resetting the algorithm to its initial
+	 * state.
+	 *
+	 * This method ensures that the algorithms instance is initialized, reads
+	 * the input file if necessary, and resets the algorithm state using the
+	 * starting model. It also updates the GUI to reflect the initial state.
+	 *
+	 * @param evt The mouse event that triggered this action.
+	 */
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
 		// TODO add your handling code here:                                    
 		// Ensure algorithms instance is initialized
@@ -265,20 +300,29 @@ public class mainwindow extends javax.swing.JFrame {
 		resetGuiWithCurrentStacks();
     }//GEN-LAST:event_jButton2MouseClicked
 	
-	// Run All Steps
+	/**
+	 * Handles the mouse click event for Run All Steps (jButton3). Ensures the
+	 * algorithms instance is initialized and performs all steps of the
+	 * algorithm. Updates the GUI accordingly and displays appropriate message
+	 * dialogs for different scenarios.
+	 *
+	 * @param evt The MouseEvent triggered by clicking the button
+	 */
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-		// TODO add your handling code here:                                     
-		// Ensure algorithms instance is initialized
+		// TODO add your handling code here:                                                                       
+		// Ensure the algorithms instance is initialized
 		if (this.algorithms == null) {
 			// Assuming userInputFile is the path to the input file
 			List<String> input;
 			try {
+				// Read the input file as a list of strings
 				input = Reading.readFileAsListOfStrings(userInputFile);
+				// Initialize the algorithms instance with the input data
 				this.algorithms = new Algorithms(input);
 			} catch (InputFormatException | InputDataException | IOException e) {
 				// Handle initialization errors (e.g., show a message dialog)
 				JOptionPane.showMessageDialog(this, "Error initializing algorithms: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				return;
+				return; // Exit the method if initialization fails
 			}
 		}
 
@@ -288,22 +332,25 @@ public class mainwindow extends javax.swing.JFrame {
 				// Keep performing steps until there are no more steps to perform
 			}
 
-			// Update the GUI to reflect the changes
+			// Update the GUI to reflect the changes after performing all steps
 			updateGuiWithCurrentStacks();
 
+			// Show a message dialog indicating all steps were performed
 			JOptionPane.showMessageDialog(this, "Performed all steps.", "Info", JOptionPane.INFORMATION_MESSAGE);
 		} catch (InputFormatException | InputDataException e) {
 			// Handle instruction processing errors (e.g., show a message dialog)
 			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
-
-
     }//GEN-LAST:event_jButton3MouseClicked
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+	
+	/**
+	 * Handles the mouse click event for Run 10 Steps (jButton4). Ensures the algorithms
+	 * instance is initialized and performs ten steps of the algorithm. Updates
+	 * the GUI accordingly and displays appropriate message dialogs for
+	 * different scenarios.
+	 *
+	 * @param evt The MouseEvent triggered by clicking the button
+	 */
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
 		// TODO add your handling code here:
 		// Ensure algorithms instance is initialized
@@ -320,10 +367,8 @@ public class mainwindow extends javax.swing.JFrame {
 			}
 		}
 
-		// Read the file and perform ten steps
-		List<String> input;
 		try {
-			input = Reading.readFileAsListOfStrings(userInputFile);
+			Reading.readFileAsListOfStrings(userInputFile);
 			boolean allStepsPerformed = this.algorithms.performTenSteps();
 
 			// Update the GUI to reflect the changes
@@ -343,25 +388,13 @@ public class mainwindow extends javax.swing.JFrame {
 		}
     }//GEN-LAST:event_jButton4MouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
-		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(mainwindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		}
-		//</editor-fold>
+		FlatLightLaf.setup();
+
+		
 		if (args.length != 1) {
             System.err.println("Usage: java Main <input_file>");
             throw new IllegalArgumentException("Invalid number of arguments");
@@ -376,7 +409,7 @@ public class mainwindow extends javax.swing.JFrame {
             throw new IllegalArgumentException("Input file must be in the format nameOfFile.txt or nested in directory like this data/nameOfFile.txt");
         }
 		
-
+		
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {

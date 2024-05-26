@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class Algorithms {
 
     private List<Stack<Character>> stacks = new ArrayList<>();
-    private List<String> input;
+    private final List<String> input;
     public final int blankIndex;
     private final int numberOfInstructions;
     public int currentInstruction;
@@ -31,6 +31,7 @@ public class Algorithms {
      */
     private record Instruction(int count, int from, int to) {}
 	
+	// Regular expression pattern to match instruction lines in the format: "move X from Y to Z"
     private static final Pattern INSTRUCTION_PATTERN = Pattern.compile("^move (\\d+) from (\\d+) to (\\d+)$");
 
     /**
@@ -273,6 +274,7 @@ public class Algorithms {
     /**
      * Resets the algorithm to its initial state. Sets the current instruction
      * pointer to the instruction right after the blank line.
+	 * @param model Representing the starting model which is read from the provided file
      */
     public void reset(DefaultTableModel model) {
         // Set the instruction pointer to the position right after the blank line
