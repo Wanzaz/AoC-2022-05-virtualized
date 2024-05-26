@@ -6,11 +6,19 @@ import java.io.IOException;
 import algorithms.Algorithms;
 import algorithms.PureAlgorithms;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Component;
+import java.awt.EventQueue;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import utilities.Reading;
 import utilities.AlgorithmTimer;
 import static utilities.AlgorithmTimer.ITERATIONS;
@@ -102,6 +110,77 @@ public class mainwindow extends javax.swing.JFrame {
 		JOptionPane.showMessageDialog(this, aboutMessage, "About", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public class VariableRowHeightRenderer extends DefaultTableCellRenderer {
+
+		public VariableRowHeightRenderer() {
+			super();
+			setHorizontalAlignment(JLabel.CENTER); // Set horizontal alignment to center
+		}
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value,
+			boolean isSelected, boolean hasFocus, int row, int column) {
+
+			// Ensure we are treating the value as a string if it's a Character
+			if (value instanceof Character) {
+				value = value.toString();
+			}
+
+			// Call the superclass method with the possibly modified value
+			Component component = super.getTableCellRendererComponent(
+				table, value, isSelected, hasFocus, row, column
+			);
+
+			// Additional rendering logic (if any)
+			// For example, setting the row height based on the content:
+			if (value instanceof String) {
+				String stringValue = (String) value;
+				int newHeight = getRowHeightBasedOnContent(stringValue);
+				table.setRowHeight(row, newHeight);
+			}
+
+			return component;
+		}
+
+		private int getRowHeightBasedOnContent(String content) {
+			// Implement your logic to determine row height based on content
+			// For example, this could be a simple length check or something more complex
+			return Math.max(16, content.length() * 2);  // Example logic
+		}
+	}
+
+
+	class StringTableModel extends AbstractTableModel {
+
+		private final String[] columnNames = {"Variable Dimension"};
+
+		@Override
+		public int getRowCount() {
+			return 3;
+		}
+
+		@Override
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			return "aa";
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			return columnNames[column];
+		}
+
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			return String.class;
+		}
+	}
+
+	
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -119,7 +198,7 @@ public class mainwindow extends javax.swing.JFrame {
         RunAllSteps = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable(new StringTableModel());
         jMenuBar1 = new javax.swing.JMenuBar();
         HelpMenu = new javax.swing.JMenu();
         AboutItem = new javax.swing.JMenuItem();
@@ -138,11 +217,6 @@ public class mainwindow extends javax.swing.JFrame {
         TimeAlgorithms.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TimeAlgorithmsMouseClicked(evt);
-            }
-        });
-        TimeAlgorithms.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TimeAlgorithmsActionPerformed(evt);
             }
         });
         jPanel1.add(TimeAlgorithms);
@@ -182,11 +256,6 @@ public class mainwindow extends javax.swing.JFrame {
                 RunAllStepsMouseClicked(evt);
             }
         });
-        RunAllSteps.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RunAllStepsActionPerformed(evt);
-            }
-        });
         jPanel1.add(RunAllSteps);
 
         jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -211,15 +280,13 @@ public class mainwindow extends javax.swing.JFrame {
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable1.setEnabled(false);
         jTable1.setMixingCutoutShape(null);
-        jTable1.setRowHeight(47);
         jTable1.setRowSelectionAllowed(false);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.setShowGrid(true);
-        // Center align the content in each column
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         for (int columnIndex = 0; columnIndex < jTable1.getColumnCount(); columnIndex++) {
-            jTable1.getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+            jTable1.getColumnModel().getColumn(columnIndex).setCellRenderer(new VariableRowHeightRenderer());
         }
         jScrollPane1.setViewportView(jTable1);
         jTable1.getAccessibleContext().setAccessibleName("");
@@ -487,18 +554,10 @@ public class mainwindow extends javax.swing.JFrame {
 		showTimeComparisonDialog();
     }//GEN-LAST:event_TimeAlgorithmsMouseClicked
 
-    private void RunAllStepsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunAllStepsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_RunAllStepsActionPerformed
-
     private void AboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutItemActionPerformed
         // TODO add your handling code here:
 		showAboutDialog();
     }//GEN-LAST:event_AboutItemActionPerformed
-
-    private void TimeAlgorithmsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TimeAlgorithmsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TimeAlgorithmsActionPerformed
 
 	/**
 	 * @param args the command line arguments
