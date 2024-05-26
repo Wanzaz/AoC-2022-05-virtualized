@@ -16,7 +16,7 @@ public class AlgorithmTimer {
     /**
      * The number of iterations to run the algorithm for timing.
      */
-    public static final int ITERATIONS = 100_000;
+    public static final int ITERATIONS = 1000;
 
     /**
      * Times the execution of the specified algorithm for the given number of iterations.

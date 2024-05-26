@@ -8,6 +8,8 @@ import algorithms.PureAlgorithms;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import utilities.Reading;
 import utilities.AlgorithmTimer;
@@ -78,6 +80,27 @@ public class mainwindow extends javax.swing.JFrame {
 		jTable1.setModel(this.startingModel);
 		this.algorithms.currentInstruction = algorithms.blankIndex + 1;
 	}
+
+	/**
+	 * Displays an "About" dialog providing information about the application
+	 * and descriptions of the buttons and their functionalities.
+	 */
+	private void showAboutDialog() {
+		// Create the content of the dialog
+		String aboutMessage = "Advent of Code day 5 Virtualization\n\n"
+			+ "This application demonstrates virtualization algorithms "
+			+ "for Advent of Code day 5 problem.\n\n"
+			+ "Buttons and Features:\n"
+			+ "- Run All Steps: This button performs all steps in the file provided.\n"
+			+ "- Run 10 Steps: This button performs 10 steps of the algorithm.\n"
+			+ "- Run 1 Step: This button performs one step of the algorithm.\n"
+			+ "- Run All Steps Back: This button performs all steps backward.\n"
+			+ "- Time Algorithms: This button compares the execution time of the app and internet solutios of this algorithm. (it can take a quite a while so wait!!!)\n\n"
+			+ "Developed by Ondrej Pazourek";
+
+		// Display the dialog
+		JOptionPane.showMessageDialog(this, aboutMessage, "About", JOptionPane.INFORMATION_MESSAGE);
+	}
 	
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -88,57 +111,88 @@ public class mainwindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        infoPopupMenu = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        TimeAlgorithms = new javax.swing.JButton();
+        Run10Steps = new javax.swing.JButton();
+        Run1Step = new javax.swing.JButton();
+        RunAllStepsBack = new javax.swing.JButton();
+        RunAllSteps = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        HelpMenu = new javax.swing.JMenu();
+        AboutItem = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
+        infoPopupMenu.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advent of Code day 5 Virtualization");
+        setBounds(new java.awt.Rectangle(0, 32, 950, 700));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMinimumSize(new java.awt.Dimension(863, 593));
 
-        jPanel1.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
+        jPanel1.setLayout(new java.awt.GridLayout());
 
-        jButton4.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
-        jButton4.setText("Run 10 Steps");
-        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+        TimeAlgorithms.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        TimeAlgorithms.setText("Time Algorithms");
+        TimeAlgorithms.setToolTipText("");
+        TimeAlgorithms.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton4MouseClicked(evt);
+                TimeAlgorithmsMouseClicked(evt);
             }
         });
-        jPanel1.add(jButton4);
-
-        jButton1.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
-        jButton1.setText("Run 1 Step");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+        TimeAlgorithms.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TimeAlgorithmsActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1);
+        jPanel1.add(TimeAlgorithms);
 
-        jButton2.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
-        jButton2.setText("Run All Steps Back");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        Run10Steps.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        Run10Steps.setText("Run 10 Steps");
+        Run10Steps.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                Run10StepsMouseClicked(evt);
             }
         });
-        jPanel1.add(jButton2);
-        jButton2.getAccessibleContext().setAccessibleName("10 Steps");
+        jPanel1.add(Run10Steps);
 
-        jButton3.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
-        jButton3.setText("Run All Steps");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        Run1Step.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        Run1Step.setText("Run 1 Step");
+        Run1Step.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                Run1StepMouseClicked(evt);
             }
         });
-        jPanel1.add(jButton3);
+        jPanel1.add(Run1Step);
+
+        RunAllStepsBack.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        RunAllStepsBack.setText("Run All Steps Back");
+        RunAllStepsBack.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RunAllStepsBackMouseClicked(evt);
+            }
+        });
+        jPanel1.add(RunAllStepsBack);
+        RunAllStepsBack.getAccessibleContext().setAccessibleName("10 Steps");
+
+        RunAllSteps.setFont(new java.awt.Font("Helvetica Neue", 0, 17)); // NOI18N
+        RunAllSteps.setText("Run All Steps");
+        RunAllSteps.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RunAllStepsMouseClicked(evt);
+            }
+        });
+        RunAllSteps.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RunAllStepsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(RunAllSteps);
 
         jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTable1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
@@ -146,7 +200,7 @@ public class mainwindow extends javax.swing.JFrame {
             List<String> input = Reading.readFileAsListOfStrings(userInputFile);
             this.algorithms = new Algorithms(input);
         } catch (IOException | InputFormatException | InputDataException e) {
-            System.err.println("An error occurred: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error initializing algorithms: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         // Get the data array and column names from the Algorithms class
@@ -165,37 +219,45 @@ public class mainwindow extends javax.swing.JFrame {
         jTable1.setRowSelectionAllowed(false);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.setShowGrid(true);
+        // Center align the content in each column
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int columnIndex = 0; columnIndex < jTable1.getColumnCount(); columnIndex++) {
+            jTable1.getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+        }
         jScrollPane1.setViewportView(jTable1);
         jTable1.getAccessibleContext().setAccessibleName("");
-        try {
-            double averageTime = AlgorithmTimer.timeAlgorithm(userInputFile);
-            System.out.printf("Average execution time over %d iterations: %.6f ms%n", ITERATIONS, averageTime);
-        } catch (IOException | InputFormatException | InputDataException e) {
-            System.err.println("An error occurred: " + e.getMessage());
-        }
-        try {
-            double averageTime = AlgorithmTimer.timeInternetSolutionAlgorithm(userInputFile);
-            System.out.printf("Average execution time over %d iterations: %.6f ms%n", ITERATIONS, averageTime);
-        } catch (IOException | InputFormatException | InputDataException e) {
-            System.err.println("An error occurred: " + e.getMessage());
-        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(68, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addComponent(jScrollPane1)
+                .addGap(50, 50, 50))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(48, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                .addGap(22, 22, 22))
         );
+
+        HelpMenu.setText("Help");
+
+        AboutItem.setText("About");
+        AboutItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AboutItemActionPerformed(evt);
+            }
+        });
+        HelpMenu.add(AboutItem);
+
+        jMenuBar1.add(HelpMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -214,9 +276,9 @@ public class mainwindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -234,7 +296,7 @@ public class mainwindow extends javax.swing.JFrame {
 	 *
 	 * @param evt The mouse event that triggered this action.
 	 */
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void Run1StepMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Run1StepMouseClicked
 		// TODO add your handling code here:                                   
 		// Ensure algorithms instance is initialized
 		if (this.algorithms == null) {
@@ -265,7 +327,7 @@ public class mainwindow extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_Run1StepMouseClicked
 	
 	/**
 	 * Handles the mouse click event for resetting the algorithm to its initial
@@ -277,7 +339,7 @@ public class mainwindow extends javax.swing.JFrame {
 	 *
 	 * @param evt The mouse event that triggered this action.
 	 */
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void RunAllStepsBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RunAllStepsBackMouseClicked
 		// TODO add your handling code here:                                    
 		// Ensure algorithms instance is initialized
 		if (this.algorithms == null) {
@@ -298,7 +360,7 @@ public class mainwindow extends javax.swing.JFrame {
 
 		// Reset the GUI to reflect the initial state
 		resetGuiWithCurrentStacks();
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_RunAllStepsBackMouseClicked
 	
 	/**
 	 * Handles the mouse click event for Run All Steps (jButton3). Ensures the
@@ -308,7 +370,7 @@ public class mainwindow extends javax.swing.JFrame {
 	 *
 	 * @param evt The MouseEvent triggered by clicking the button
 	 */
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    private void RunAllStepsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RunAllStepsMouseClicked
 		// TODO add your handling code here:                                                                       
 		// Ensure the algorithms instance is initialized
 		if (this.algorithms == null) {
@@ -341,7 +403,7 @@ public class mainwindow extends javax.swing.JFrame {
 			// Handle instruction processing errors (e.g., show a message dialog)
 			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
-    }//GEN-LAST:event_jButton3MouseClicked
+    }//GEN-LAST:event_RunAllStepsMouseClicked
 	
 	/**
 	 * Handles the mouse click event for Run 10 Steps (jButton4). Ensures the algorithms
@@ -351,7 +413,7 @@ public class mainwindow extends javax.swing.JFrame {
 	 *
 	 * @param evt The MouseEvent triggered by clicking the button
 	 */
-    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+    private void Run10StepsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Run10StepsMouseClicked
 		// TODO add your handling code here:
 		// Ensure algorithms instance is initialized
 		if (this.algorithms == null) {
@@ -386,7 +448,61 @@ public class mainwindow extends javax.swing.JFrame {
 			// Handle instruction processing errors (e.g., show a message dialog)
 			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
-    }//GEN-LAST:event_jButton4MouseClicked
+    }//GEN-LAST:event_Run10StepsMouseClicked
+	
+	/**
+	 * Displays a dialog comparing the execution times of your solution and the
+	 * internet solution.
+	 */
+	private void showTimeComparisonDialog() {
+		// Gather execution time information for your solution
+		double yourSolutionTime = 0.0;
+		try {
+			yourSolutionTime = AlgorithmTimer.timeAlgorithm(userInputFile);
+		} catch (IOException | InputFormatException | InputDataException e) {
+			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		// Gather execution time information for the internet solution
+		double internetSolutionTime = 0.0;
+		try {
+			internetSolutionTime = AlgorithmTimer.timeInternetSolutionAlgorithm(userInputFile);
+		} catch (IOException | InputFormatException | InputDataException e) {
+			JOptionPane.showMessageDialog(this, "Error processing instruction: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		// Prepare the message for the dialog
+		String comparisonMessage = "Comparison of Execution Times:\n\n"
+			+ "App Solution: " + String.format("%.6f", yourSolutionTime) + " ms\n"
+			+ "Internet So.: " + String.format("%.6f", internetSolutionTime) + " ms\n\n";
+
+		// Display the dialog
+		JOptionPane.showMessageDialog(this, comparisonMessage, "Time Comparison", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	/**
+	 * Handles the mouse click event for the "Time Algorithms" button. Calls the
+	 * method to display the comparison dialog of execution times.
+	 *
+	 * @param evt The MouseEvent triggered by clicking the button
+	 */
+    private void TimeAlgorithmsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TimeAlgorithmsMouseClicked
+		// TODO add your handling code here:
+		showTimeComparisonDialog();
+    }//GEN-LAST:event_TimeAlgorithmsMouseClicked
+
+    private void RunAllStepsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunAllStepsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RunAllStepsActionPerformed
+
+    private void AboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutItemActionPerformed
+        // TODO add your handling code here:
+		showAboutDialog();
+    }//GEN-LAST:event_AboutItemActionPerformed
+
+    private void TimeAlgorithmsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TimeAlgorithmsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TimeAlgorithmsActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -419,10 +535,16 @@ public class mainwindow extends javax.swing.JFrame {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JMenuItem AboutItem;
+    private javax.swing.JMenu HelpMenu;
+    private javax.swing.JButton Run10Steps;
+    private javax.swing.JButton Run1Step;
+    private javax.swing.JButton RunAllSteps;
+    private javax.swing.JButton RunAllStepsBack;
+    private javax.swing.JButton TimeAlgorithms;
+    private javax.swing.JPopupMenu infoPopupMenu;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
