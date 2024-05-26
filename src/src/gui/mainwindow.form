@@ -2,19 +2,6 @@
 
 <Form version="1.8" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Container class="javax.swing.JPopupMenu" name="infoPopupMenu">
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-      <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-          </Properties>
-        </MenuItem>
-      </SubComponents>
-    </Container>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="HelpMenu">
@@ -39,13 +26,13 @@
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Advent of Code day 5 Virtualization"/>
     <Property name="bounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
-      <Rectangle value="[0, 32, 950, 700]"/>
+      <Rectangle value="[0, 32, 1000, 700]"/>
     </Property>
     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
       <Color id="Default Cursor"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[863, 593]"/>
+      <Dimension value="[1000, 700]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -72,10 +59,10 @@
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                      <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
                       <Component id="jPanel2" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel1" alignment="0" pref="938" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -85,7 +72,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+              <Component id="jPanel2" max="32767" attributes="0"/>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Component id="jPanel1" pref="135" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -214,7 +201,10 @@
                   <Color id="Default Cursor"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="rowHeight" type="int" value="30"/>
+                <Property name="mixingCutoutShape" type="java.awt.Shape" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="null"/>
+                </Property>
+                <Property name="rowHeight" type="int" value="47"/>
                 <Property name="rowSelectionAllowed" type="boolean" value="false"/>
                 <Property name="selectionMode" type="int" value="0"/>
                 <Property name="showGrid" type="boolean" value="true"/>

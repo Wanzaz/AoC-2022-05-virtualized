@@ -111,8 +111,6 @@ public class mainwindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        infoPopupMenu = new javax.swing.JPopupMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         TimeAlgorithms = new javax.swing.JButton();
         Run10Steps = new javax.swing.JButton();
@@ -126,14 +124,11 @@ public class mainwindow extends javax.swing.JFrame {
         HelpMenu = new javax.swing.JMenu();
         AboutItem = new javax.swing.JMenuItem();
 
-        jMenuItem1.setText("jMenuItem1");
-        infoPopupMenu.add(jMenuItem1);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advent of Code day 5 Virtualization");
-        setBounds(new java.awt.Rectangle(0, 32, 950, 700));
+        setBounds(new java.awt.Rectangle(0, 32, 1000, 700));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMinimumSize(new java.awt.Dimension(863, 593));
+        setMinimumSize(new java.awt.Dimension(1000, 700));
 
         jPanel1.setLayout(new java.awt.GridLayout());
 
@@ -215,7 +210,8 @@ public class mainwindow extends javax.swing.JFrame {
         jTable1.setModel(this.startingModel);
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable1.setEnabled(false);
-        jTable1.setRowHeight(30);
+        jTable1.setMixingCutoutShape(null);
+        jTable1.setRowHeight(47);
         jTable1.setRowSelectionAllowed(false);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.setShowGrid(true);
@@ -269,14 +265,14 @@ public class mainwindow extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 938, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                 .addContainerGap())
@@ -542,9 +538,7 @@ public class mainwindow extends javax.swing.JFrame {
     private javax.swing.JButton RunAllSteps;
     private javax.swing.JButton RunAllStepsBack;
     private javax.swing.JButton TimeAlgorithms;
-    private javax.swing.JPopupMenu infoPopupMenu;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
